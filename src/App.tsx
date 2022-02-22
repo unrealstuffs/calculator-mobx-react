@@ -22,17 +22,17 @@ const App: FC<{ store: Store }> = observer(({ store }) => {
 			<Button onClick={() => store.deleteDigit()}>DEL</Button>
 			<Button onClick={() => store.countPercent()}>%</Button>
 			<Button onClick={() => store.chooseOperation('÷')}>÷</Button>
-			<Button onClick={() => store.addDigit('1')}>1</Button>
-			<Button onClick={() => store.addDigit('2')}>2</Button>
-			<Button onClick={() => store.addDigit('3')}>3</Button>
+			<Button onClick={() => store.addDigit('7')}>7</Button>
+			<Button onClick={() => store.addDigit('8')}>8</Button>
+			<Button onClick={() => store.addDigit('9')}>9</Button>
 			<Button onClick={() => store.chooseOperation('*')}>*</Button>
 			<Button onClick={() => store.addDigit('4')}>4</Button>
 			<Button onClick={() => store.addDigit('5')}>5</Button>
 			<Button onClick={() => store.addDigit('6')}>6</Button>
 			<Button onClick={() => store.chooseOperation('+')}>+</Button>
-			<Button onClick={() => store.addDigit('7')}>7</Button>
-			<Button onClick={() => store.addDigit('8')}>8</Button>
-			<Button onClick={() => store.addDigit('9')}>9</Button>
+			<Button onClick={() => store.addDigit('1')}>1</Button>
+			<Button onClick={() => store.addDigit('2')}>2</Button>
+			<Button onClick={() => store.addDigit('3')}>3</Button>
 			<Button onClick={() => store.chooseOperation('-')}>-</Button>
 			<Button onClick={() => store.addDigit('.')}>.</Button>
 			<Button onClick={() => store.addDigit('0')}>0</Button>
