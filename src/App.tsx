@@ -9,10 +9,13 @@ const App: FC<{ store: Store }> = observer(({ store }) => {
 		<div className='grid grid-cols-[repeat(4,_6rem)] grid-rows-[minmax(7rem,_auto)_repeat(5,_6rem)]'>
 			<div className='col-span-4 bg-black opacity-75 flex flex-col items-end justify-around p-3 break-all'>
 				<div className='text-white opacity-75 text-2xl'>
-					{formatOperand(store.previousOperand!)} {store.operation}
+					{store.previousOperand &&
+						formatOperand(store.previousOperand)}{' '}
+					{store.operation}
 				</div>
 				<div className='text-white text-4xl'>
-					{formatOperand(store.currentOperand!)}
+					{store.currentOperand &&
+						formatOperand(store.currentOperand)}
 				</div>
 			</div>
 

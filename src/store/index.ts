@@ -26,28 +26,38 @@ class Store {
 		if (digit === '0' && this.currentOperand === '0') {
 			return
 		}
-		if (digit === '.' && this.currentOperand!.includes('.')) {
+		if (
+			digit === '.' &&
+			this.currentOperand &&
+			this.currentOperand.includes('.')
+		) {
 			return
 		}
+
 		this.currentOperand = `${this.currentOperand || ''}${digit}`
+
+		if (this.currentOperand.length > 15) {
+			this.currentOperand = this.currentOperand.slice(0, -1)
+		}
 	}
 
 	chooseOperation(operation: string) {
-		if (this.currentOperand == null && this.previousOperand == null) {
+		if (this.currentOperand === null && this.previousOperand === null) {
 			return
 		}
 
-		if (this.currentOperand == null) {
+		if (this.currentOperand === null) {
 			this.operation = operation
 			return
 		}
 
-		if (this.previousOperand == null) {
+		if (this.previousOperand === null) {
 			this.operation = operation
 			this.previousOperand = this.currentOperand
 			this.currentOperand = null
 			return
 		}
+
 		this.previousOperand = this._evaluate({
 			currentOperand: this.currentOperand,
 			previousOperand: this.previousOperand,
@@ -58,53 +68,73 @@ class Store {
 	}
 
 	countPercent() {
-		if (this.currentOperand == null && this.previousOperand == null) {
+		if (this.currentOperand === null && this.previousOperand === null) {
 			return
 		}
 
 		if (this.previousOperand === null) {
+			this.overwrite = true
 			this.currentOperand = `${
-				// @ts-ignore: Object is possibly 'null'.
-				parseFloat(this.currentOperand) / 100 || ''
+				this.currentOperand ? parseFloat(this.currentOperand) / 100 : ''
 			}`
 			return
 		}
 
-		this.currentOperand = `${
-			(parseFloat(this.previousOperand) / 100) *
-				// @ts-ignore: Object is possibly 'null'.
-				parseFloat(this.currentOperand) || ''
-		}`
+		if (this.currentOperand && this.previousOperand) {
+			this.currentOperand = `${
+				(parseFloat(this.previousOperand) / 100) *
+					parseFloat(this.currentOperand) || ''
+			}`
 
-		this.overwrite = true
+			this.overwrite = true
+		}
 	}
 
 	clear() {
 		this.currentOperand = null
 		this.previousOperand = null
+		this.operation = null
 	}
 
 	deleteDigit() {
+		if (this.currentOperand === null && this.previousOperand === null) {
+			return
+		}
+
 		if (this.overwrite) {
 			this.overwrite = false
 			this.currentOperand = null
+			this.previousOperand = null
+			return
 		}
-		if (this.currentOperand == null) return
-		if (this.currentOperand.length === 1) {
+
+		if (this.currentOperand === null && this.previousOperand) {
+			this.currentOperand = this.previousOperand
+			this.operation = null
+			this.previousOperand = null
+			return
+		}
+
+		if (this.currentOperand && this.currentOperand.length === 1) {
 			this.currentOperand = null
+			return
 		}
-		// @ts-ignore: Object is possibly 'null'.
-		this.currentOperand = this.currentOperand.slice(0, -1)
+
+		if (this.currentOperand) {
+			this.currentOperand = this.currentOperand.slice(0, -1)
+			return
+		}
 	}
 
 	evaluate() {
 		if (
-			this.operation == null ||
-			this.currentOperand == null ||
-			this.previousOperand == null
+			this.operation === null ||
+			this.currentOperand === null ||
+			this.previousOperand === null
 		) {
 			return
 		}
+
 		this.overwrite = true
 		this.currentOperand = this._evaluate({
 			currentOperand: this.currentOperand,
@@ -144,7 +174,7 @@ class Store {
 				break
 		}
 
-		return computation.toString()
+		return parseFloat(computation.toFixed(8).toString()).toString()
 	}
 }
 
